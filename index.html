@@ -2,18 +2,24 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
       body { margin: 0; overflow: hidden; }
     </style>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" missTolerance: 100; warmupTolerance: 2; filterMinCF: 0.0001; filterBeta: 10; color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled:false">
+    <a-scene 
+      mindar-image="imageTargetSrc: ./targets.mind; missTolerance: 100; warmupTolerance: 2; filterMinCF: 0.0001; filterBeta: 10;" 
+      embedded 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <video id="ar-video" src="./ar-exhibition.mp4" preload="auto" loop="true" muted="true" playsinline webkit-playsinline></video>
+        <video id="ar-video" src="./ar-exhibition.mp4" preload="auto" loop="true" playsinline webkit-playsinline></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -24,9 +30,10 @@
     </a-scene>
 
     <script>
-      // ブラウザの制限対策：画面タップで動画再生
+      // 画面タップで動画と音声を有効化
       document.body.addEventListener('click', () => {
         const video = document.querySelector('#ar-video');
+        video.muted = false;
         video.play();
       });
     </script>
