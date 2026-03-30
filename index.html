@@ -2,41 +2,28 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
+    <style>body { margin: 0; overflow: hidden; }</style>
   </head>
   <body>
-    <a-scene 
-      mindar-image="imageTargetSrc: ./targets.mind; missTolerance: 100; warmupTolerance: 2; filterMinCF: 0.0001; filterBeta: 10;" 
-      embedded 
-      color-space="sRGB" 
-      renderer="colorManagement: true, physicallyCorrectLights" 
-      vr-mode-ui="enabled: false" 
-      device-orientation-permission-ui="enabled: false">
-      
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video id="ar-video" src="https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/image-tracking/assets/card-example/video.mp4" ...
-
+        <video id="ar-video" src="https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/image-tracking/assets/card-example/video.mp4" preload="auto" loop="true" playsinline webkit-playsinline muted></video>
       </a-assets>
-
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#ar-video" width="1" height="0.707" rotation="0 0 0" position="0 0 0"></a-video>
+        <a-video src="#ar-video" width="1" height="0.55" position="0 0 0"></a-video>
       </a-entity>
     </a-scene>
-
     <script>
-      // 画面タップで動画と音声を有効化
       document.body.addEventListener('click', () => {
-        const video = document.querySelector('#ar-video');
-        video.muted = false;
-        video.play();
+        const v = document.querySelector('#ar-video');
+        v.muted = false;
+        v.play();
       });
     </script>
   </body>
 </html>
+
+      
