@@ -27,12 +27,16 @@
 
       </a-entity>
     </a-scene>
-    <script>
-      document.body.addEventListener('click', () => {
-        const v = document.querySelector('#ar-video');
+        <script>
+      const v = document.querySelector('#ar-video');
+      // 画面に指が触れた瞬間に再生を開始する（iPhoneに最も強い命令）
+      window.addEventListener('touchstart', () => {
+        v.play();
         v.muted = false;
+      }, {once: true});
+      
+      // 読み込み完了時に自動再生を試みる
+      document.querySelector('a-scene').addEventListener('loaded', () => {
         v.play();
       });
     </script>
-  </body>
-</html>
