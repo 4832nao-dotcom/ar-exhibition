@@ -2,16 +2,14 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
     <style>body { margin: 0; overflow: hidden; }</style>
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: ./targets.mind; filterMinCF:0.0001; filterBeta: 10;" embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <video id="ar-video" src="./test_fixed.mp4.MOV" preload="auto" loop="true" playsinline webkit-playsinline muted crossorigin="anonymous"></video>
-
       </a-assets>
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <a-entity mindar-image-target="targetIndex: 0">
@@ -20,18 +18,24 @@
     </a-scene>
     <script>
       const v = document.querySelector('#ar-video');
-      // 画面に指が触れた瞬間に「映像の詰まり」を解消する
-      window.addEventListener('touchstart', () => {
+      
+      // iPhoneの描画エンジンを強制起動させる「儀式」
+      const forcePlay = () => {
         v.play().then(() => {
           v.muted = false;
+          // 映像が「音だけ」になるのを防ぐため、毎フレーム描画を強制更新
+          const tick = () => {
+            if(!v.paused) {
+              v.currentTime = v.currentTime; 
+              requestAnimationFrame(tick);
+            }
+          };
+          tick();
         });
-      }, {once: true});
-      
-      // 映像が「真っ黒」になるのを防ぐための強制描画命令
-      v.addEventListener('playing', () => {
-        v.style.opacity = "0.99";
-        setTimeout(() => { v.style.opacity = "1"; }, 100);
-      });
+      };
+
+      window.addEventListener('touchstart', forcePlay, {once: true});
+      window.addEventListener('click', forcePlay, {once: true});
     </script>
   </body>
 </html>
